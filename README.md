@@ -13,6 +13,9 @@ Useful for your friendly competitions in and around the workplace.
 - Python 3
 - Working Internet Connection
 - Admin Access to a Slack Team or the ability to bribe someone who does (I hear Christmas Cookies are nice this time of year‥)
+- Serverless `npm install -g serverless`
+- dotenv `npm install -g dotenv`
+- AWS credentials
 
 **Process**:
 
@@ -22,12 +25,12 @@ Useful for your friendly competitions in and around the workplace.
     - If you don't have access to add an incoming webhook, see the [Recommended Settings](#recommended-settings) section for more details.
 2. Log in to Advent of Code and obtain two things: the Private Leaderboard ID Number and a Session Cookie.
 See [Session Cookie](#getting-a-session-cookie) section for details.
-3. Dump that info into the copy of the script.
-  - Webhook URL goes in the `SLACK_WEBHOOK` variable
-  - Session goes in the `SESSION_ID` variable
-  - Leaderboard ID goes in the `LEADERBOARD_ID` variable.
+3. Dump that info into a `.env` file
+  - Webhook URL goes in a `SLACK_WEBHOOK` variable
+  - Session goes in a `SESSION_ID` variable
+  - Leaderboard ID goes in a `LEADERBOARD_ID` variable.
     - The ID is the last part of the leaderboard url (https://adventofcode.com/2018/leaderboard/private/view/LEADERBOARD_ID)
-4. Run that shit. Schedule a cron job or something. I don't know. You're doing Advent of Code, figure it out. [Just make sure that you don't hit the servers too often.](https://www.reddit.com/r/adventofcode/comments/7gy2y3/remember_please_limit_automated_http_requests/)
+4. Deploy using `make deploy` which will package the lambda and deploy to AWS
 
 ## Recommended Settings
 When creating the custom webhook for the Slack channel, there are a few options to customize.
@@ -35,7 +38,7 @@ When creating the custom webhook for the Slack channel, there are a few options 
 It's also possible that you don't have access to add an incoming webhook to your team because of the permissions model. In that case, you would need to know what to send to the admin to get it set up. This is that stuff.
 
 Here are the recommended settings when setting up the Hook:
-- **Post to Channel:** Your `#adventofcode` channel, or `#general`
+- **Post to Channel:** Your `#advent-of-code` channel equivalent
 - **Descriptive Label:** Whatever you want. This isn't really necessary.
 - **Customize Name:** "Advent of Code Leaderboard"
 - **Customize Icon:** Pick an emoji → Christmas Tree

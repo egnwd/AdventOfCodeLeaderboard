@@ -1,0 +1,25 @@
+service: advent-of-code-leaderboard
+
+frameworkVersion: '2 || 3'
+useDotenv: true
+package:
+  artifact: package.zip
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
+  stage: ${opt:stage, env:AWS_STAGE, 'dev'}
+  region: ${opt:region, env:AWS_REGION, 'eu-west-1'}
+
+functions:
+  leaderboard:
+    handler: leaderboard.lambda_handler
+    environment:
+      YEAR: ${env:YEAR}
+      LEADERBOARD_ID: ${env:LEADERBOARD_ID}
+      SESSION_ID: ${env:SESSION_ID}
+      SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
+    events:
+      # Invoke Lambda function every day in the evening from 1st-25th December
+      - schedule: cron(0 20 1-25 DEC ? *)
